@@ -1,7 +1,11 @@
 package com.example.courseapidata.topic;
 
+import com.example.courseapidata.course.Course;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 public class Topic {
@@ -15,6 +19,8 @@ public class Topic {
 
     }
 
+    @OneToMany(mappedBy = "topic")
+    private Set<Course> courses;
     public Topic(String id, String name, String description) {
         this.id = id;
         this.name = name;
@@ -45,4 +51,11 @@ public class Topic {
         this.description = description;
     }
 
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
 }

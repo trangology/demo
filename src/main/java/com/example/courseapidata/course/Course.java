@@ -1,8 +1,10 @@
 package com.example.courseapidata.course;
 
 import com.example.courseapidata.topic.Topic;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -14,7 +16,8 @@ public class Course {
     private String name;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Topic topic;
 
     public Course() {

@@ -1,11 +1,12 @@
 package com.example.courseapidata.course;
 
 import com.example.courseapidata.topic.Topic;
+import com.example.courseapidata.topic.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 public class CourseController {
@@ -13,9 +14,13 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private TopicService topicService;
+
     @RequestMapping("/topics/{id}/courses")
-    public List<Course> getAllCourses(@PathVariable String id) {
-        return courseService.getAllCourses(id);
+    public Optional<Set<Course>> getAllCourses(@PathVariable String id) {
+        Optional<Topic> topic = topicService.getTopic(id);
+        return topic.map(p->p.getCourses());
     }
 
     @RequestMapping("/topics/{topicId}/courses/{id}")
@@ -25,7 +30,8 @@ public class CourseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/topics/{topicId}/courses/{id}")
     public void addCourse(@RequestBody Course course, @PathVariable String topicId) {
-        course.setTopic(new Topic(topicId, "", ""));
+        Optional<Topic> topic = topicService.getTopic(topicId);
+        course.setTopic(topic.get());
         courseService.addCourse(course);
     }
 
