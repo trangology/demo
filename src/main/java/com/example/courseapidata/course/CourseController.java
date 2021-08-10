@@ -18,9 +18,8 @@ public class CourseController {
     private TopicService topicService;
 
     @RequestMapping("/topics/{id}/courses")
-    public Optional<Set<Course>> getAllCourses(@PathVariable String id) {
-        Optional<Topic> topic = topicService.getTopic(id);
-        return topic.map(p->p.getCourses());
+    public Optional<Topic> getAllCourses(@PathVariable String id) {
+        return topicService.getTopic(id);
     }
 
     @RequestMapping("/topics/{topicId}/courses/{id}")
@@ -37,7 +36,8 @@ public class CourseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/topics/{topicId}/courses/{id}")
     public void updateCourse(@RequestBody Course course, @PathVariable String topicId, @PathVariable String id) {
-        course.setTopic(new Topic(topicId, "", ""));
+        Optional<Topic> topic = topicService.getTopic(topicId);
+        course.setTopic(topic.get());
         courseService.updateCourse(course);
     }
 

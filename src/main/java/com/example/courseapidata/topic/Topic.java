@@ -19,8 +19,6 @@ public class Topic {
 
     }
 
-    @OneToMany(mappedBy = "topic")
-    private Set<Course> courses;
     public Topic(String id, String name, String description) {
         this.id = id;
         this.name = name;
@@ -51,11 +49,4 @@ public class Topic {
         this.description = description;
     }
 
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
 }
